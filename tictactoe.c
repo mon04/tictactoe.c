@@ -1,7 +1,8 @@
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-int checkForResult(int playerNum, int row, int col);
-void printGrid();
+int check_for_result(int playerNum, int row, int col);
+void print_grid();
 
 int grid[3][3] = {
     {0, 0, 0},
@@ -10,6 +11,7 @@ int grid[3][3] = {
 };
 const int GRID_H = sizeof(grid)/sizeof(grid[0]);
 const int GRID_W = sizeof(grid[0])/sizeof(int);
+const char symbols[3] = {'-', 'X', 'O'};
 
 int main() {
     for(int i=0; i<sizeof(grid); i++) {
@@ -21,25 +23,28 @@ int main() {
     int turn=1;
     while(turn <= 9) {
         int row, col;
-        printf("Player %d, enter your row: ", active_player);
-        scanf("%d", &row);
-        printf("Player %d, enter your col: ", active_player);
-        scanf("%d", &col);
+        printf("\e[1;1H\e[2J");
+        print_grid();
+        printf("\n\'%c\' player, enter your next move: ", symbols[active_player]);
+        scanf("%d%d", &row, &col);
         grid[row][col] = active_player;
-        printGrid();
-        int result = checkForResult(active_player, row, col);
+        int result = check_for_result(active_player, row, col);
         if(result > 0) {
-            printf("Player %d wins!\n", active_player);
+            printf("\e[1;1H\e[2J");
+            print_grid();
+            printf("\nPlayer %c wins!\n", symbols[active_player]);
             return 0;
         }
         active_player = (active_player == 1) ?2 :1;
         turn++;
     }
-    printf("The game has ended in a draw!\n");
+    printf("\e[1;1H\e[2J");
+    print_grid();
+    printf("\nThe game has ended in a draw!\n");
     return 0;
 }
 
-int checkForResult(int playerNum, int row, int col) {
+int check_for_result(int playerNum, int row, int col) {
     if(grid[row][0] == playerNum && grid[row][1] == playerNum && grid[row][2] == playerNum) {
         return playerNum;
     }
@@ -55,14 +60,13 @@ int checkForResult(int playerNum, int row, int col) {
     return -1;
 }
 
-void printGrid() {
-    char s[3] = {'-', 'X', 'O'};
-    printf("\n");
+void print_grid() {
+    //printf("\n");
     for(int i=0; i < GRID_H; i++) {
         for(int j=0; j < GRID_W; j++) {
-            printf("%c ", s[grid[i][j]]);
+            printf("%c ", symbols[grid[i][j]]);
         }
         printf("\n");
     }
-    printf("\n");
+    //printf("\n");
 }
