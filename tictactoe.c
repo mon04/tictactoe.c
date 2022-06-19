@@ -14,8 +14,8 @@ const int GRID_W = sizeof(grid[0])/sizeof(int);
 const char symbols[3] = {'-', 'X', 'O'};
 
 int main() {
-    for(int i=0; i<sizeof(grid); i++) {
-        for(int j=0; j < sizeof(grid[i]); j++) {
+    for(int i=0; i < GRID_H; i++) {
+        for(int j=0; j < GRID_W; j++) {
             grid[i][j] = 0;
         }
     }
